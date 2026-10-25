@@ -21,7 +21,10 @@
 
  <img width="1058" height="588" alt="Screenshot 2026-10-26 005039" src="https://github.com/user-attachments/assets/87bbdaf7-59aa-4a98-b745-7f233973eed3" />
 
-
+ # How to play
+ Just go to the following link of itch.io and press play[it may take a few secs for the first launch of the game]
+[Visit Game](https://kabirutreja.itch.io/the-bad-ui)
+ 
  # Credits
 Parallax Background by Aethrall.
 
