@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using System;
 public class DialogueManager : MonoBehaviour
 {
     [System.Serializable]
@@ -18,6 +18,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     public GameObject dialogueBox;
+    public GameObject optionmenu;
     public TextMeshProUGUI dialogueText;
     public float typingSpeed = 0.02f;
     public TextMeshProUGUI nameText;
@@ -26,6 +27,9 @@ public class DialogueManager : MonoBehaviour
     private int sentenceIndex;
     private Coroutine typingCoroutine;
     private bool isTyping = false;
+    public GameObject blackScreen;
+    public GameObject TETRISGAME;
+     private Action onDialogueCompleteCallback;
 
     void Start()
     {
@@ -58,6 +62,11 @@ public class DialogueManager : MonoBehaviour
         if (dialogueQueue.Count == 0)
         {
             dialogueBox.SetActive(false);
+             if (onDialogueCompleteCallback != null)
+        {
+            onDialogueCompleteCallback.Invoke();
+            onDialogueCompleteCallback = null;
+        }
             return;
         }
 
@@ -128,6 +137,13 @@ public class DialogueManager : MonoBehaviour
         }));
         AdvanceQueue();
     }
+     private void EnableCalibrationObject()
+    {
+        TETRISGAME.SetActive(true);
+        
+            blackScreen.SetActive(true);
+        
+    }
     public void QuitButton()
     {
         dialogueQueue.Clear();
@@ -144,5 +160,31 @@ public class DialogueManager : MonoBehaviour
         dialogueQueue.Clear();
         dialogueQueue.Enqueue(new DialogueBlock("PIP (T_T)", new string[] { "Welcome, I'm PIP, your Personal Interface Partner", "Let's get you started", "Try all the buttons you see", "Some works and some don't.." }));
         AdvanceQueue();
+    }
+    public void OpenSettings()
+    {
+        optionmenu.SetActive(true);
+        dialogueQueue.Clear();
+        dialogueQueue.Enqueue(new DialogueBlock("System", new string[] { "Volume is Locked. To unlock, complete the calibration trial"}));
+        dialogueQueue.Enqueue(new DialogueBlock("PIP (T_T)", new string[] { "That's standard! Calibration is important for your audio experience.", "Let's get it done.", "Ohh! That's classic tetris.", "Complete 6 lines to continue or press ESC to go back"}));
+          onDialogueCompleteCallback = () => 
+          {
+            EnableCalibrationObject(); 
+        };
+        AdvanceQueue();
+    }
+    public void CloseSettings()
+    {
+        optionmenu.SetActive(false);
+    }
+    public void tetrisclose()
+    {
+         TETRISGAME.SetActive(false);
+        
+            blackScreen.SetActive(false);
+    }
+    public void tetrisdone()
+    {
+        dialogueQueue.Enqueue(new DialogueBlock("PIP (::)", new string[] { "yay! challange completed"}));
     }
 }
